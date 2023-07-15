@@ -39,7 +39,7 @@ There is something named `Container` in this architecture which decides when/whe
 ## Different Categories of Integration
 We need to make sure that container can have access to differet microfrontends we created. In our example, they are `Market` and `Cart`. This is called `integration` and there are multiple ways of doing it. 
 
-We should have in mind, that there is no single perfect solution in integration. There are many solutions, and each of the have their pros and cons and we need to choose the one which suits our application needs better. 
+We should have in mind, that there is no single perfect solution in integration. There are many solutions, and each of them have their pros and cons and we need to choose the one which suits our application needs better. 
 
 Major categories of integration are: 
 
@@ -75,5 +75,32 @@ Setting up the container, needs us to be skilled in `webpack`.
 #### Disadvantages
 - Tooling and setup is more complicated than the other method
 
-### Server integration
+## Implementing
+In this section we focus on handling implementation what we want and discuss the solutions and possible methods to handle the project better.
+
+### [Module Federation](https://github.com/module-federation/universe/tree/main)
+One method of implementing Run-time Integration is using Webpack module federation. There are tons of useful examples [here](https://github.com/module-federation/module-federation-examples). The most useful ones for our approach are: 
+
+- [react-18-ssr](https://github.com/module-federation/module-federation-examples/tree/master/react-18-ssr)
+- [nextjs-ssr](https://github.com/module-federation/module-federation-examples/tree/master/nextjs-ssr)
+- [nextjs-react](https://github.com/module-federation/module-federation-examples/tree/master/nextjs-react)
+
+We can use each of the above examples. All of them are Run-time integration. Therefore, on each change and with a good CI/CD pipeline, on every change the whole application would change.
+
+#### [react-18-ssr](https://github.com/module-federation/module-federation-examples/tree/master/react-18-ssr)
+Our application is using react-18. One possible way is to use a `ssr-host` and then add different parts of the application, using remote applications. In the example provided by `Module Federation`, There is a shell which hosts the application (it is the container) and includes SSR server.
+
+There are `remote1` and `remote2` which are react applications. `remote1` is an standalone application, exposes `Content` component and consumes `Image` from `remote2`. And there is `remote2` which is a standalone application, exposes `Image` component.
+
+![react-ssr](images/07-react-ssr.png)
+
+On our problem, with the same method, we can create a `ssr-shell` as a host. Then multiple remote applications. One of the remotes can be the main application. 
+
+![react-ssr](images/08-react-ssr.png)
+
+In this approach, we fetch corresponding data from API in the main application and the host simultaneously, then the shell host renders them server side. 
+
+## Tools to handle Microfrontend projects better
+### [Lerna](https://lerna.js.org/docs/getting-started)
+Lerna is a fast, modern build system for managing and publishing multiple JavaScript/TypeScript packages from the same repository. We can use them to handle the host repository which includes multiple remote app. [Guide](https://www.digitalocean.com/community/tutorials/how-to-manage-monorepos-with-lerna)
 
