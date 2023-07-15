@@ -1,3 +1,22 @@
+- [Microfrontend](#microfrontend)
+  - [What is Microfrontend](#what-is-microfrontend)
+      - [Advantages of using Microfrontends](#advantages-of-using-microfrontends)
+      - [Disadvantages](#disadvantages)
+  - [Different Categories of Integration](#different-categories-of-integration)
+    - [Build-Time Integration](#build-time-integration)
+      - [Advantages](#advantages)
+      - [Disadvantages](#disadvantages-1)
+    - [Run-Time Integration](#run-time-integration)
+      - [Advantages](#advantages-1)
+      - [Disadvantages](#disadvantages-2)
+  - [Implementing](#implementing)
+    - [Module Federation](#module-federation)
+      - [react-18-ssr](#react-18-ssr)
+  - [Tools to handle Microfrontend projects better](#tools-to-handle-microfrontend-projects-better)
+    - [NWB](#nwb)
+    - [Lerna](#lerna)
+
+
 # Microfrontend
 In this documentation, we will present some methods and ways to implement Micro Frontends. Since, there are lots of different approaches we can take, it is important to understand each of the approaches and their upsides and downsides.
 
@@ -21,7 +40,6 @@ With this approach, as long as we can, we should prevent direct connection betwe
 ![Micro-frontend with API](images/03-micro.png)
 
 There is something named `Container` in this architecture which decides when/where to show each Microfrontend.
-
 
 
 #### Advantages of using Microfrontends
@@ -101,6 +119,13 @@ On our problem, with the same method, we can create a `ssr-shell` as a host. The
 In this approach, we fetch corresponding data from API in the main application and the host simultaneously, then the shell host renders them server side. 
 
 ## Tools to handle Microfrontend projects better
+### [NWB](https://github.com/insin/nwb)
+NWB is a toolkit for React, Preact, Inferno & vanilla JS apps, React libraries and other npm modules for the web, with no configuration. If we choose the build-time integration, we can use this tooling to create our packages more easily. Although, it won't help us on managing Microfrontend applications because in the end, we need to create a container as the host.
+
+That host, needs to be `SSR` or anything else according to our needs. 
+
+Regarding disadvantages of `Built-time Integration`, `NWB` won't help with any of them. After each update to the sub-modules, we need to re-deploy the container to see the changes. Furthermore, the whole source code of the sub-module (the Microfrontend we add to the main project) will be available through the main container which is not a very good practice in Microfrontend architecture.
+
 ### [Lerna](https://lerna.js.org/docs/getting-started)
 Lerna is a fast, modern build system for managing and publishing multiple JavaScript/TypeScript packages from the same repository. We can use them to handle the host repository which includes multiple remote app. [Guide](https://www.digitalocean.com/community/tutorials/how-to-manage-monorepos-with-lerna)
 
