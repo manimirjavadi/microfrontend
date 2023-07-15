@@ -10,10 +10,19 @@
       - [Advantages](#advantages-1)
       - [Disadvantages](#disadvantages-2)
   - [Implementing](#implementing)
-    - [Module Federation](#module-federation)
+  - [Tools and Frameworks to handle Microfrontend projects better](#tools-and-frameworks-to-handle-microfrontend-projects-better)
+    - [Webpack 5 Module Federation](#webpack-5-module-federation)
       - [react-18-ssr](#react-18-ssr)
-  - [Tools to handle Microfrontend projects better](#tools-to-handle-microfrontend-projects-better)
     - [NWB](#nwb)
+    - [Bit](#bit)
+    - [AWS Serverless Microfrontends@edge](#aws-serverless-microfrontendsedge)
+    - [Single-spa](#single-spa)
+    - [PuzzleJS](#puzzlejs)
+    - [OpenComponents](#opencomponents)
+    - [SystemJS](#systemjs)
+    - [qiankun](#qiankun)
+    - [Piral](#piral)
+    - [Frint](#frint)
     - [Lerna](#lerna)
 
 
@@ -96,7 +105,10 @@ Setting up the container, needs us to be skilled in `webpack`.
 ## Implementing
 In this section we focus on handling implementation what we want and discuss the solutions and possible methods to handle the project better.
 
-### [Module Federation](https://github.com/module-federation/universe/tree/main)
+## Tools and Frameworks to handle Microfrontend projects better
+In this section we will provide some overviews about the frameworks and tools which can help us to build Microfrontend architecture. Each of these tools are using either run-time integration or build-time integration. We should keep in mind that these tools won't remove the method disadvantages and they are just built to make the development easier.
+
+### [Webpack 5 Module Federation](https://github.com/module-federation/universe/tree/main)
 One method of implementing Run-time Integration is using Webpack module federation. There are tons of useful examples [here](https://github.com/module-federation/module-federation-examples). The most useful ones for our approach are: 
 
 - [react-18-ssr](https://github.com/module-federation/module-federation-examples/tree/master/react-18-ssr)
@@ -118,13 +130,50 @@ On our problem, with the same method, we can create a `ssr-shell` as a host. The
 
 In this approach, we fetch corresponding data from API in the main application and the host simultaneously, then the shell host renders them server side. 
 
-## Tools to handle Microfrontend projects better
 ### [NWB](https://github.com/insin/nwb)
 NWB is a toolkit for React, Preact, Inferno & vanilla JS apps, React libraries and other npm modules for the web, with no configuration. If we choose the build-time integration, we can use this tooling to create our packages more easily. Although, it won't help us on managing Microfrontend applications because in the end, we need to create a container as the host.
 
 That host, needs to be `SSR` or anything else according to our needs. 
 
 Regarding disadvantages of `Built-time Integration`, `NWB` won't help with any of them. After each update to the sub-modules, we need to re-deploy the container to see the changes. Furthermore, the whole source code of the sub-module (the Microfrontend we add to the main project) will be available through the main container which is not a very good practice in Microfrontend architecture.
+
+### [Bit](https://bit.dev/)
+Bit is a Build-Time integration Framework. Bit provides a full framework, including CI/CD pipeline. It takes separate components and builds them into micro-frontends. Bit is similar to Webpack that it works in Build time. However, with the Module Federations Plugin, Webpack has an advantage of Run-Time integration, as well, which makes components are more decoupled.
+
+According to Bit, this tool is an open-source tool for composing component-driven software. And these components, can be as big as modern web applications, e-commerce shops, large building blocks like a Blog and etc. And they can also be as small as simple UI components like Header, Footer, and etc. 
+
+This tool does not predescribe how to build the entire application. It helps you define and compose components and allows for every component to adopt the dev tools that best fit its nature. Bit offers native support for various dev tools like `Typescript`, `Babel`, `Jest`, `Webpack`, `ESLint` and ready made development environments for different frameworks like React, NodeJS, Angular, vue and more. 
+
+This tool is open-source, updates regularly, has great documentation and also easy to use.
+
+### [AWS Serverless Microfrontends@edge](https://youtu.be/fT-5RHTtFNg)
+AWS Severless Micro-Frontends at the Edge: In this approach, AWS make use of their CDN (AWS CloudFront) and Lambda@Edge. The orchestration will happen on the CDN itself, instead of the Client-Side or Server-Side. More about this at [this youtube clip](https://youtu.be/fT-5RHTtFNg).
+
+The problem with this approach is -under our circumstances- using `AWS` may not be a suitable option for developing. 
+
+### [Single-spa](https://single-spa.js.org/docs/getting-started-overview)
+Single-spa is a framework for bringin together multiple JavaScript microfrontends in a frontend application. They have an [example](https://single-spa.js.org/docs/examples) page which has different implementation for different frameworks. 
+
+single-spa consist of the following: 
+- A single-spa root config, which renders the HTML page and the javascript that registers applications. Each application is registered with three things: 
+  - A name
+  - A function to load the application's code
+  - A function that determines when the application active/inactive
+- Applications which can be thought of as single-page applications packaged up into modules. Each application must know how to bootstrap, mount, and unmount itself from the DOM. The main difference between a traditional SPA and single-spa applications is that they must be able to coexist with other applications as they do not each have their own HTML page.
+
+This tool have a good documentation and is using Run-Time Integration.
+
+### [PuzzleJS](https://github.com/puzzle-js/puzzle-js)
+
+### [OpenComponents](https://github.com/opencomponents/oc)
+
+### [SystemJS](https://github.com/systemjs/systemjs)
+
+### [qiankun](https://github.com/umijs/qiankun)
+
+### [Piral](https://github.com/smapiot/piral)
+
+### [Frint](https://github.com/frintjs/frint)
 
 ### [Lerna](https://lerna.js.org/docs/getting-started)
 Lerna is a fast, modern build system for managing and publishing multiple JavaScript/TypeScript packages from the same repository. We can use them to handle the host repository which includes multiple remote app. [Guide](https://www.digitalocean.com/community/tutorials/how-to-manage-monorepos-with-lerna)
